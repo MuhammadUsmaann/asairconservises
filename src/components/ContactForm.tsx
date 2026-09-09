@@ -38,20 +38,18 @@ export default function ContactForm({ variant = "page" }: ContactFormProps) {
     }
 
     setPending(true);
+    setSubmitted(true);
+    setValues({
+      fullName: "",
+      mobile: "",
+      email: "",
+      subject: "",
+      message: "",
+    });
+    setPending(false);
     window.setTimeout(() => {
-      setSubmitted(true);
-      setValues({
-        fullName: "",
-        mobile: "",
-        email: "",
-        subject: "",
-        message: "",
-      });
-      setPending(false);
-      window.requestAnimationFrame(() => {
-        statusRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
-      });
-    }, 250);
+      statusRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 50);
   }
 
   return (
