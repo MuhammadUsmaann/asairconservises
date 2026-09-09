@@ -14,6 +14,14 @@ export const metadata: Metadata = {
     description:
       "Get in touch with AS Aircon Service for professional HVAC help in Sungai Petani, Kedah.",
     url: "/contact-us",
+    images: [
+      {
+        url: "/images/hero-contact.jpg",
+        width: 1600,
+        height: 2400,
+        alt: "Technician performing air conditioner leak detection and service",
+      },
+    ],
   },
 };
 

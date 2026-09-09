@@ -14,6 +14,14 @@ export const metadata: Metadata = {
     description:
       "Meet the professional team behind reliable heating and air conditioning services in Sungai Petani.",
     url: "/about-us",
+    images: [
+      {
+        url: "/images/about-tech.jpg",
+        width: 1600,
+        height: 1067,
+        alt: "Technicians servicing outdoor air conditioning units",
+      },
+    ],
   },
 };
 

@@ -6,6 +6,8 @@ type ContactFormProps = {
   variant?: "page" | "section";
 };
 
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 export default function ContactForm({ variant = "page" }: ContactFormProps) {
   const [submitted, setSubmitted] = useState(false);
   const [pending, setPending] = useState(false);
@@ -24,8 +26,10 @@ export default function ContactForm({ variant = "page" }: ContactFormProps) {
     setValues((prev) => ({ ...prev, [field]: value }));
   }
 
-  function handleSend() {
+  async function handleSend() {
     setError("");
+    setSubmitted(false);
+
     if (
       !values.fullName.trim() ||
       !values.mobile.trim() ||
@@ -37,19 +41,41 @@ export default function ContactForm({ variant = "page" }: ContactFormProps) {
       return;
     }
 
+    if (!emailPattern.test(values.email.trim())) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
     setPending(true);
-    setSubmitted(true);
-    setValues({
-      fullName: "",
-      mobile: "",
-      email: "",
-      subject: "",
-      message: "",
-    });
-    setPending(false);
-    window.setTimeout(() => {
-      statusRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
-    }, 50);
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      });
+      const data = (await response.json()) as { ok?: boolean; error?: string };
+
+      if (!response.ok || !data.ok) {
+        setError(data.error || "Something went wrong. Please try again.");
+        return;
+      }
+
+      setSubmitted(true);
+      setValues({
+        fullName: "",
+        mobile: "",
+        email: "",
+        subject: "",
+        message: "",
+      });
+      window.setTimeout(() => {
+        statusRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+      }, 50);
+    } catch {
+      setError("Unable to send your message. Please try WhatsApp or call us.");
+    } finally {
+      setPending(false);
+    }
   }
 
   return (

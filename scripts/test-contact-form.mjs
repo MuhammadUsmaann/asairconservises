@@ -18,7 +18,7 @@ await page.getByPlaceholder("Write Something Here...").fill("Need chemical wash 
 console.log("values before click", await name.inputValue());
 
 await page.getByRole("button", { name: /submit now/i }).click();
-await page.waitForTimeout(500);
+await page.waitForTimeout(1200);
 
 const banner = page.getByText("Thank you! Your message has been received");
 const visible = await banner.isVisible().catch(() => false);

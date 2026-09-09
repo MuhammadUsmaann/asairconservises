@@ -14,6 +14,14 @@ export const metadata: Metadata = {
     description:
       "Trusted AC repair, installation, and servicing experts in Sungai Petani.",
     url: "/",
+    images: [
+      {
+        url: "/images/hero-ac.jpg",
+        width: 1800,
+        height: 1200,
+        alt: "AS Aircon Service technician working on air conditioning units",
+      },
+    ],
   },
 };
 
