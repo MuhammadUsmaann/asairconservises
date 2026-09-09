@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useId, useRef, useState } from "react";
 
 type ContactFormProps = {
   variant?: "page" | "section";
@@ -18,6 +18,7 @@ export default function ContactForm({ variant = "page" }: ContactFormProps) {
   });
   const [error, setError] = useState("");
   const uid = useId();
+  const statusRef = useRef<HTMLDivElement>(null);
 
   function update(field: keyof typeof values, value: string) {
     setValues((prev) => ({ ...prev, [field]: value }));
@@ -47,6 +48,9 @@ export default function ContactForm({ variant = "page" }: ContactFormProps) {
         message: "",
       });
       setPending(false);
+      window.requestAnimationFrame(() => {
+        statusRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+      });
     }, 250);
   }
 
@@ -58,16 +62,6 @@ export default function ContactForm({ variant = "page" }: ContactFormProps) {
           <p className="mt-2 text-text-muted">
             Need help with your AC? Our experts are ready to assist you.
           </p>
-        </div>
-      )}
-
-      {submitted && (
-        <div
-          className="mb-4 rounded-md border border-brand-green/40 bg-[#f3fbee] px-4 py-3 text-sm font-semibold text-brand-navy"
-          role="status"
-          aria-live="polite"
-        >
-          Thank you! Your message has been received. We will contact you soon.
         </div>
       )}
 
@@ -151,6 +145,17 @@ export default function ContactForm({ variant = "page" }: ContactFormProps) {
         >
           {pending ? "Sending..." : "Submit Now"}
         </button>
+
+        {submitted && (
+          <div
+            ref={statusRef}
+            className="rounded-md border border-brand-green/40 bg-[#f3fbee] px-4 py-3 text-sm font-semibold text-brand-navy"
+            role="status"
+            aria-live="polite"
+          >
+            Thank you! Your message has been received. We will contact you soon.
+          </div>
+        )}
       </div>
     </div>
   );
