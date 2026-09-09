@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useId, useState } from "react";
 
 type ContactFormProps = {
   variant?: "page" | "section";
@@ -8,6 +8,7 @@ type ContactFormProps = {
 
 export default function ContactForm({ variant = "page" }: ContactFormProps) {
   const [submitted, setSubmitted] = useState(false);
+  const uid = useId();
 
   function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -26,24 +27,34 @@ export default function ContactForm({ variant = "page" }: ContactFormProps) {
         </div>
       )}
 
+      {submitted && (
+        <div
+          className="mb-4 rounded-md border border-brand-green/40 bg-[#f3fbee] px-4 py-3 text-sm font-semibold text-brand-navy"
+          role="status"
+          aria-live="polite"
+        >
+          Thank you! Your message has been received. We will contact you soon.
+        </div>
+      )}
+
       <form onSubmit={onSubmit} className="space-y-4" noValidate>
         <div className="grid gap-4 md:grid-cols-2">
-          <label className="sr-only" htmlFor="fullName">
+          <label className="sr-only" htmlFor={`${uid}-fullName`}>
             Your Full Name
           </label>
           <input
-            id="fullName"
+            id={`${uid}-fullName`}
             name="fullName"
             required
             placeholder="Your Full Name"
             className="form-input"
             autoComplete="name"
           />
-          <label className="sr-only" htmlFor="mobile">
+          <label className="sr-only" htmlFor={`${uid}-mobile`}>
             Your Mobile Number
           </label>
           <input
-            id="mobile"
+            id={`${uid}-mobile`}
             name="mobile"
             type="tel"
             required
@@ -51,11 +62,11 @@ export default function ContactForm({ variant = "page" }: ContactFormProps) {
             className="form-input"
             autoComplete="tel"
           />
-          <label className="sr-only" htmlFor="email">
+          <label className="sr-only" htmlFor={`${uid}-email`}>
             Your Email Address
           </label>
           <input
-            id="email"
+            id={`${uid}-email`}
             name="email"
             type="email"
             required
@@ -63,11 +74,11 @@ export default function ContactForm({ variant = "page" }: ContactFormProps) {
             className="form-input"
             autoComplete="email"
           />
-          <label className="sr-only" htmlFor="subject">
+          <label className="sr-only" htmlFor={`${uid}-subject`}>
             Your Subject
           </label>
           <input
-            id="subject"
+            id={`${uid}-subject`}
             name="subject"
             required
             placeholder="Your Subject"
@@ -75,11 +86,11 @@ export default function ContactForm({ variant = "page" }: ContactFormProps) {
           />
         </div>
 
-        <label className="sr-only" htmlFor="message">
+        <label className="sr-only" htmlFor={`${uid}-message`}>
           Your Message
         </label>
         <textarea
-          id="message"
+          id={`${uid}-message`}
           name="message"
           required
           rows={6}
@@ -93,12 +104,6 @@ export default function ContactForm({ variant = "page" }: ContactFormProps) {
         >
           Submit Now
         </button>
-
-        {submitted && (
-          <p className="text-sm font-medium text-brand-blue" role="status">
-            Thank you! Your message has been received. We will contact you soon.
-          </p>
-        )}
       </form>
     </div>
   );
