@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useId, useState } from "react";
+import { FormEvent, useId, useState, useTransition } from "react";
 
 type ContactFormProps = {
   variant?: "page" | "section";
@@ -8,12 +8,23 @@ type ContactFormProps = {
 
 export default function ContactForm({ variant = "page" }: ContactFormProps) {
   const [submitted, setSubmitted] = useState(false);
+  const [pending, startTransition] = useTransition();
   const uid = useId();
 
-  function onSubmit(event: FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setSubmitted(true);
-    event.currentTarget.reset();
+    event.stopPropagation();
+
+    const form = event.currentTarget;
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    startTransition(() => {
+      setSubmitted(true);
+      form.reset();
+    });
   }
 
   return (
@@ -37,7 +48,13 @@ export default function ContactForm({ variant = "page" }: ContactFormProps) {
         </div>
       )}
 
-      <form onSubmit={onSubmit} className="space-y-4" noValidate>
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-4"
+        method="post"
+        action="#"
+        noValidate
+      >
         <div className="grid gap-4 md:grid-cols-2">
           <label className="sr-only" htmlFor={`${uid}-fullName`}>
             Your Full Name
@@ -100,9 +117,10 @@ export default function ContactForm({ variant = "page" }: ContactFormProps) {
 
         <button
           type="submit"
-          className="w-full rounded bg-brand-green py-3.5 text-base font-extrabold uppercase tracking-wide text-brand-navy transition hover:bg-brand-green-dark"
+          disabled={pending}
+          className="w-full rounded bg-brand-green py-3.5 text-base font-extrabold uppercase tracking-wide text-brand-navy transition hover:bg-brand-green-dark disabled:opacity-70"
         >
-          Submit Now
+          {pending ? "Sending..." : "Submit Now"}
         </button>
       </form>
     </div>
