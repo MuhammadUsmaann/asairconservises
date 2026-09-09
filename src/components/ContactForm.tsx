@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useId, useState, useTransition } from "react";
+import { useId, useState } from "react";
 
 type ContactFormProps = {
   variant?: "page" | "section";
@@ -8,23 +8,46 @@ type ContactFormProps = {
 
 export default function ContactForm({ variant = "page" }: ContactFormProps) {
   const [submitted, setSubmitted] = useState(false);
-  const [pending, startTransition] = useTransition();
+  const [pending, setPending] = useState(false);
+  const [values, setValues] = useState({
+    fullName: "",
+    mobile: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
+  const [error, setError] = useState("");
   const uid = useId();
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    event.stopPropagation();
+  function update(field: keyof typeof values, value: string) {
+    setValues((prev) => ({ ...prev, [field]: value }));
+  }
 
-    const form = event.currentTarget;
-    if (!form.checkValidity()) {
-      form.reportValidity();
+  function handleSend() {
+    setError("");
+    if (
+      !values.fullName.trim() ||
+      !values.mobile.trim() ||
+      !values.email.trim() ||
+      !values.subject.trim() ||
+      !values.message.trim()
+    ) {
+      setError("Please fill in all fields before submitting.");
       return;
     }
 
-    startTransition(() => {
+    setPending(true);
+    window.setTimeout(() => {
       setSubmitted(true);
-      form.reset();
-    });
+      setValues({
+        fullName: "",
+        mobile: "",
+        email: "",
+        subject: "",
+        message: "",
+      });
+      setPending(false);
+    }, 250);
   }
 
   return (
@@ -48,13 +71,13 @@ export default function ContactForm({ variant = "page" }: ContactFormProps) {
         </div>
       )}
 
-      <form
-        onSubmit={handleSubmit}
-        className="space-y-4"
-        method="post"
-        action="#"
-        noValidate
-      >
+      {error && (
+        <p className="mb-3 text-sm font-medium text-red-600" role="alert">
+          {error}
+        </p>
+      )}
+
+      <div className="space-y-4">
         <div className="grid gap-4 md:grid-cols-2">
           <label className="sr-only" htmlFor={`${uid}-fullName`}>
             Your Full Name
@@ -62,7 +85,8 @@ export default function ContactForm({ variant = "page" }: ContactFormProps) {
           <input
             id={`${uid}-fullName`}
             name="fullName"
-            required
+            value={values.fullName}
+            onChange={(e) => update("fullName", e.target.value)}
             placeholder="Your Full Name"
             className="form-input"
             autoComplete="name"
@@ -74,7 +98,8 @@ export default function ContactForm({ variant = "page" }: ContactFormProps) {
             id={`${uid}-mobile`}
             name="mobile"
             type="tel"
-            required
+            value={values.mobile}
+            onChange={(e) => update("mobile", e.target.value)}
             placeholder="Your Mobile Number"
             className="form-input"
             autoComplete="tel"
@@ -86,7 +111,8 @@ export default function ContactForm({ variant = "page" }: ContactFormProps) {
             id={`${uid}-email`}
             name="email"
             type="email"
-            required
+            value={values.email}
+            onChange={(e) => update("email", e.target.value)}
             placeholder="Your Email Address"
             className="form-input"
             autoComplete="email"
@@ -97,7 +123,8 @@ export default function ContactForm({ variant = "page" }: ContactFormProps) {
           <input
             id={`${uid}-subject`}
             name="subject"
-            required
+            value={values.subject}
+            onChange={(e) => update("subject", e.target.value)}
             placeholder="Your Subject"
             className="form-input"
           />
@@ -109,20 +136,22 @@ export default function ContactForm({ variant = "page" }: ContactFormProps) {
         <textarea
           id={`${uid}-message`}
           name="message"
-          required
           rows={6}
+          value={values.message}
+          onChange={(e) => update("message", e.target.value)}
           placeholder="Write Something Here..."
           className="form-input resize-y"
         />
 
         <button
-          type="submit"
+          type="button"
+          onClick={handleSend}
           disabled={pending}
           className="w-full rounded bg-brand-green py-3.5 text-base font-extrabold uppercase tracking-wide text-brand-navy transition hover:bg-brand-green-dark disabled:opacity-70"
         >
           {pending ? "Sending..." : "Submit Now"}
         </button>
-      </form>
+      </div>
     </div>
   );
 }
