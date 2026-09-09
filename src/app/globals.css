@@ -1,0 +1,336 @@
+@import "tailwindcss";
+
+:root {
+  --brand-blue: #1082e1;
+  --brand-blue-dark: #0c6fc0;
+  --brand-navy: #1d365b;
+  --brand-green: #80c551;
+  --brand-green-dark: #6db043;
+  --whatsapp: #25d366;
+  --input-bg: #f7f7f8;
+  --section-gray: #f5f7fa;
+  --text-muted: #5a6a7a;
+  --background: #ffffff;
+  --foreground: #1d365b;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-brand-blue: var(--brand-blue);
+  --color-brand-blue-dark: var(--brand-blue-dark);
+  --color-brand-navy: var(--brand-navy);
+  --color-brand-green: var(--brand-green);
+  --color-brand-green-dark: var(--brand-green-dark);
+  --color-whatsapp: var(--whatsapp);
+  --color-input-bg: var(--input-bg);
+  --color-section-gray: var(--section-gray);
+  --color-text-muted: var(--text-muted);
+  --font-sans: var(--font-montserrat);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-montserrat), "Montserrat", sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--brand-blue) 25%, white);
+}
+
+.container-site {
+  width: 100%;
+  max-width: 1120px;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .container-site {
+    padding-inline: 2rem;
+  }
+}
+
+.section-title {
+  color: var(--brand-navy);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+}
+
+.green-underline {
+  display: block;
+  width: 64px;
+  height: 4px;
+  background: var(--brand-green);
+  margin-top: 0.75rem;
+  border-radius: 2px;
+}
+
+.green-underline-center {
+  margin-inline: auto;
+}
+
+.btn-green {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--brand-green);
+  color: #fff;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.85rem 1.75rem;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.btn-green:hover {
+  background: var(--brand-green-dark);
+}
+
+.btn-green:active {
+  transform: translateY(1px);
+}
+
+.btn-blue {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--brand-blue);
+  color: #fff;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.85rem 1.75rem;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.btn-blue:hover {
+  background: var(--brand-blue-dark);
+}
+
+.btn-whatsapp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--whatsapp);
+  color: #fff;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.7rem 1.4rem;
+  border-radius: 4px;
+  transition: filter 0.2s ease, transform 0.15s ease;
+}
+
+.btn-whatsapp:hover {
+  filter: brightness(0.95);
+}
+
+.form-input {
+  width: 100%;
+  background: var(--input-bg);
+  border: 1px solid #e8eaed;
+  border-radius: 6px;
+  padding: 0.95rem 1rem;
+  color: var(--brand-navy);
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-input::placeholder {
+  color: #8a97a8;
+}
+
+.form-input:focus {
+  border-color: var(--brand-blue);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-blue) 18%, transparent);
+}
+
+.decor-circle {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border: 2px solid var(--brand-blue);
+  border-radius: 9999px;
+  display: grid;
+  place-items: center;
+  color: var(--brand-blue);
+  font-size: 2rem;
+  font-weight: 300;
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+.decor-dots {
+  position: absolute;
+  display: grid;
+  grid-template-columns: repeat(3, 8px);
+  gap: 6px;
+  pointer-events: none;
+}
+
+.decor-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: #f0c419;
+}
+
+.fade-up {
+  animation: fadeUp 0.7s ease both;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes floatSoft {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.float-soft {
+  animation: floatSoft 3.2s ease-in-out infinite;
+}
+
+.hero-overlay {
+  background: linear-gradient(
+    90deg,
+    rgba(10, 30, 60, 0.72) 0%,
+    rgba(10, 30, 60, 0.45) 45%,
+    rgba(10, 30, 60, 0.25) 100%
+  );
+}
+
+.prose-seo h2,
+.prose-seo h3 {
+  color: var(--brand-navy);
+  font-weight: 800;
+  text-transform: uppercase;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.prose-seo p {
+  color: var(--text-muted);
+  line-height: 1.75;
+  margin-bottom: 1rem;
+}
+
+.prose-seo ul {
+  list-style: disc;
+  padding-left: 1.25rem;
+  color: var(--text-muted);
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+.prose-seo a {
+  color: var(--brand-blue);
+}
+
+.prose-seo a:hover {
+  text-decoration: underline;
+}
+
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(16, 130, 225, 0.08);
+}
+
+.comparison-table th {
+  background: var(--brand-navy);
+  color: #fff;
+  text-align: left;
+  padding: 0.9rem 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.03em;
+}
+
+.comparison-table td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid #e8eef5;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.comparison-table tr:nth-child(even) td {
+  background: #f8fbff;
+}
+
+.faq-item {
+  border: 1px solid #d9e6f5;
+  border-radius: 6px;
+  background: #f7fbff;
+  margin-bottom: 0.65rem;
+  overflow: hidden;
+}
+
+.faq-item summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 0.95rem 1.1rem;
+  font-weight: 700;
+  color: var(--brand-blue);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item[open] summary {
+  background: #eef6ff;
+}
+
+.faq-item .faq-body {
+  padding: 0 1.1rem 1rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
